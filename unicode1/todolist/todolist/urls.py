@@ -29,5 +29,6 @@ urlpatterns = [
     path('radio1/',views.radio1,name='radio1'),
     path('deleteT/',views.delete_task,name='deleteT'),
     path('deleteL/',views.delete_list,name='deleteL'),
-    path('updateL/',views.update_list,name='updateL'),
+    path('updateL/<int:id1>',views.update_list,name='updateL'),
+    # path('update2/<int:id>',views.update2,name='update2'),
 ]

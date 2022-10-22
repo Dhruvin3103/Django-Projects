@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import render,redirect
 # Create your views here.
 from .models import Task,List
 from .form import Createview,Taskview
@@ -6,17 +6,23 @@ def home(request):
     return render(request,'home.html',{})
 
 def create(request):
-    if request.method == 'GET':
-        d = Createview(request.GET)
-        if d.is_valid():
+    # d=Createview()
+    # if request.method == 'POST':
+    # d = Createview(request.POST)
+    d = Createview(request.POST or None)
+
+    if d.is_valid():
             d.save()
+            d = Createview()
     return render(request,'create.html',{'data':d})
 
 def task(request):
     if request.method == 'GET':
         t = Taskview(request.GET)
+        print(t)
         if t.is_valid():
             t.save()
+            t=Taskview()
     return render(request,'task.html',{'data':t})
 
 def retrive(request):
@@ -37,36 +43,37 @@ def retriveL(request,id):
 def checkbox(request):
     r1=[]
     r2=[]
-    for i in Task.objects.all().values():
-        r1.append(i['title'])
+    for i in List.objects.all().values():
+        r1.append(i['title1'])
         r2.append(i['id'])
     # print(r1)
+    return render(request,'deleteT.html',{'data':zip(r1,r2)})
+
+def delete_task(request):
+    c = request.GET.getlist('data')
+    for i in c:
+        List.objects.get(id=i).delete()
+
+    r1=[]
+    r2=[]
+    for i in List.objects.all().values():
+        r1.append(i['title1'])
+        r2.append(i['id'])
     return render(request,'deleteT.html',{'data':zip(r1,r2)})
 
 def checkbox1(request):
     r1=[]
     r2=[]
-    for i in List.objects.all().values():
+    for i in Task.objects.all().values():
         r1.append(i['title'])
         r2.append(i['id'])
     # print(r1)
     return render(request,'deleteL.html',{'data':zip(r1,r2)})
 
-def delete_task(request):
-    c = request.GET.getlist('data')
-    for i in c:
-        List.objects.get(title1=i).delete()
-    # Anyother method
-    r1=[]
-    r2=[]
-    for i in List.objects.all().values():
-        r1.append(i['title1'])
-        r1.append(i['id'])
-    return render(request,'deleteT.html',{'data':zip(r1,r2)})
-
 def delete_list(request):
     c = request.GET.getlist('data')
     for i in c:
+        # print(i)
         Task.objects.get(id=i).delete()
     # Any other method ?
     r1=[]
@@ -89,17 +96,18 @@ def radio1(request):
     print(r1)
     return render(request,'updateL.html',{'data':zip(r1,r2)})
 
-def update_list(request):
-    c=request.GET.get('data')
+def update_list(request,id1):
 
-    # m=Task.objects.get(title=c)
+    u = Task.objects.get(id=id1)
 
     if request.method == 'GET':
-        d = Taskview(request.GET)
-        if d.is_valid():
-            n=d.cleaned_data['title']
-            d.title=n
-            d.save()
+        t = Taskview(request.GET,instance=u)
+        print(t)
+        # print(t.errors)
+        print('hi')
+        if t.is_valid():
+             t.save()
+             print('hi!')
+             return redirect('radio1')
 
-    return render(request,'updateLL.html',{'data':d})
 

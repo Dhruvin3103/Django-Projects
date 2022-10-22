@@ -10,7 +10,7 @@
 <h1>To Do list</h1>
 <form action="/deleteT" method="GET">
 {% for i,j in data %}
-<input type="checkbox" name='data' value={{ j }}>{{ i }}<br>
+<input type="checkbox" name='data' value={{j}}>{{ i }}<br>
 {% endfor %}
 <input type="submit" value="Delete">
 </form>

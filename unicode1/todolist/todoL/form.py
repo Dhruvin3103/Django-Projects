@@ -10,4 +10,6 @@ class Createview(forms.ModelForm):
 class Taskview(forms.ModelForm):
     class Meta:
         model = Task
-        fields = '__all__'
+        fields = {
+            'title'
+        }
