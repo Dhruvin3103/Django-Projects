@@ -11,8 +11,11 @@
 <p>Task in database
 <a href="http://127.0.0.1:8000/admin"><button>Admin</button></a>
 <a href="http://127.0.0.1:8000"><button>home</button></a></p>
+<table border="1">
 {% for i in data %}
-<li><a href="http://127.0.0.1:8000/retriveL/{{ i }}">{{ i }}</a></li>
+<tr><td><a href="http://127.0.0.1:8000/retriveL/{{ i.id }}">{{ i.title }}</a></td>
+    <td><a href="http://127.0.0.1:8000/updateL/{{ i.id }}">Update</a></td></tr>
 {% endfor %}
+    </table>
 </body>
 </html>

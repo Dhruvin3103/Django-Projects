@@ -26,9 +26,10 @@ urlpatterns = [
     path('retriveL/<str:id>',views.retriveL,name='retriveL'),
     path('checkbox/',views.checkbox,name='checkbox'),
     path('checkbox1/',views.checkbox1,name='checkbox1'),
-    path('radio1/',views.radio1,name='radio1'),
+    # path('radio1/',views.radio1,name='radio1'),
     path('deleteT/',views.delete_task,name='deleteT'),
     path('deleteL/',views.delete_list,name='deleteL'),
     path('updateL/<int:id1>',views.update_list,name='updateL'),
+    path('updateT/<int:id2>/<int:id3>',views.update_task,name='updateT'),
     # path('update2/<int:id>',views.update2,name='update2'),
 ]

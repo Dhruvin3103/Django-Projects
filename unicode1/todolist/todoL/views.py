@@ -19,25 +19,28 @@ def create(request):
 def task(request):
     if request.method == 'GET':
         t = Taskview(request.GET)
-        print(t)
         if t.is_valid():
             t.save()
             t=Taskview()
+            return redirect('create')
     return render(request,'task.html',{'data':t})
 
 def retrive(request):
-     c = [i for i in Task.objects.all()]
+     c = [i for i in Task.objects.all().values()]
+     # print(c)
      return render(request,'retrive_task.html',{'data':c})
 
 def retriveL(request,id):
-    r = List.objects.filter(task_FK=(Task.objects.get(title=id))).values()
+    r = List.objects.filter(task_FK=(Task.objects.get(id=id))).values()
     # print(r)
+    u = [i for i in List.objects.all().values()]
     c = []
     e=0
     for i in r:
         c.append(e+1)
         e=e+1
-    dc = {'dat':zip(c,r)}
+    dc = {'dat':zip(c,r,u),'id':id}
+    # print(id)
     return render(request,'retriveL.html',dc)
 
 def checkbox(request):
@@ -87,27 +90,48 @@ def delete_list(request):
     #         d.delete()
     return render(request,'deleteL.html',{'data':zip(r1,r2)})
 
-def radio1(request):
-    r1=[]
-    r2=[]
-    for i in Task.objects.all().values():
-        r1.append(i['title'])
-        r2.append(i['id'])
-    print(r1)
-    return render(request,'updateL.html',{'data':zip(r1,r2)})
-
 def update_list(request,id1):
 
-    u = Task.objects.get(id=id1)
-
-    if request.method == 'GET':
-        t = Taskview(request.GET,instance=u)
-        print(t)
-        # print(t.errors)
-        print('hi')
+        u = Task.objects.get(id=id1)
+        t = Taskview(request.POST or None,instance=u)
         if t.is_valid():
-             t.save()
-             print('hi!')
-             return redirect('radio1')
+            t.save()
+            return redirect('retrive')
+        return render(request,'update1.html',{'data':t})
 
+
+def update_task(request, id2,id3):
+    u = List.objects.get(id=id2)
+    v = Task.objects.get(id=id3)
+    # print(v)
+    t = Createview(request.POST or None, instance=u)
+    if t.is_valid():
+        t.save()
+        return redirect('retriveL',v.id)
+    return render(request, 'update2.html', {'data': t})
+# def radio1(request):
+#     r1=[]
+#     r2=[]
+#     for i in Task.objects.all().values():
+#         r1.append(i['title'])
+#         r2.append(i['id'])
+#     print(r1)
+#     return render(request,'updateL.html',{'data':zip(r1,r2)})
+
+# def update_list(request,id1):
+#
+#     u = Task.objects.get(id=id1)
+#
+#     if request.method == 'GET':
+#         t = Taskview(request.GET,instance=u)
+#         print(t)
+#         print(t.errors)
+#         print('hi')
+#         if t.is_valid():
+#              u.save()
+#              print('hi!')
+#              return redirect('radio1')
+#         else:
+#             d = Taskview(instance=u)
+#             return render(request, 'updateLL.html', {'data': d})
 

@@ -12,9 +12,11 @@
 <a href="http://127.0.0.1:8000/task"><button>CreateTask</button></a>
 <a href="http://127.0.0.1:8000"><button>Home</button></a><br></p>
 
-{% for i,j in dat %}
-<p>Task {{ i }}: </p>
+{% for i,j,k in dat %}
+
 <table border = "1">
+    <tr><td><b><i>Task {{ i }}</i></b> </td>
+    <td><a href="http://127.0.0.1:8000/updateT/{{ k.id }}/{{ id }}">Update</a></td></tr>
 <tr><td><b>To do</b> : {{ j.title1 }}</td></tr>
 <tr><td><b>description</b> : {{ j.desc }}</td></tr>
 <tr><td><b>start time</b> : {{ j.start }}</td></tr>
