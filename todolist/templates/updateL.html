@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Delete Task</title>
+</head>
+<body>
+<button><a href="http://127.0.0.1:8000/admin">Admin</a></button>
+<button><a href="http://127.0.0.1:8000">Home</a></button><br>
+<h1>To Do list</h1>
+<form action="/updateL" method="get">
+{% for i,j in data %}
+<!--<input type="radio" name='data' value={{ j }}>{{ i }}<br>-->
+    <li><a href="http://127.0.0.1:8000/updateL/{{ j }}">{{ i }}</a></li>
+<br>
+    {% endfor %}
+<!--<input type="submit" value="Delete" >-->
+</form>
+
+</body>
+</html>

@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/html">
+<head>
+    <meta charset="UTF-8">
+    <title>Delete Task</title>
+</head>
+<body>
+<button><a href="http://127.0.0.1:8000/admin">Admin</a></button>
+<button><a href="http://127.0.0.1:8000">Home</a></button><br>
+<h1>To Do list</h1>
+<form action="/deleteL" method="GET">
+{% for i,j in data %}
+<input type="checkbox" name='data' value={{j}}>{{ i }}<br>
+{% endfor %}
+<input type="submit" value="Delete">
+<!--</form>-->
+<!--&lt;!&ndash;<form action="/deleteL" method="GET">&ndash;&gt;-->
+<!--&lt;!&ndash;    <table>&ndash;&gt;-->
+<!--&lt;!&ndash;        {% for i,j in data %}&ndash;&gt;-->
+<!--&lt;!&ndash;    <input type="checkbox" name='data' value={{j}}>{{ i }}<br>&ndash;&gt;-->
+<!--&lt;!&ndash;    {% endfor %}&ndash;&gt;-->
+<!--&lt;!&ndash;    <input type="submit" value="Delete">&ndash;&gt;-->
+
+<!--&lt;!&ndash;    </table>&ndash;&gt;-->
+<!--&lt;!&ndash;    <button type="submit">Submit</button>&ndash;&gt;-->
+<!--</form>-->
+</body>
+</html>
