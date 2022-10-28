@@ -1,6 +1,15 @@
 from django import forms
+from .models import List,Task,user
+from django.contrib.auth.forms import UserCreationForm,UserChangeForm
+class user_createform(UserCreationForm):
+    class Meta:
+        model = user
+        fields = ('username','mob_no','dob')
 
-from .models import List,Task
+class user_changeform(UserChangeForm):
+    class Meta:
+        model = user
+        fields = ('username','mob_no','dob')
 
 class Createview(forms.ModelForm):
     class Meta:

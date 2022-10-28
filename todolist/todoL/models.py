@@ -4,7 +4,6 @@ from django.contrib.auth.models import AbstractUser
 # Create your models here.
 class user(AbstractUser):
     mob_no = models.CharField(max_length=10,unique=True)
-    img = models.ImageField(upload_to='todoL/images')
     dob = models.DateField(null=True)
 class Task(models.Model):
     title = models.CharField(max_length=200)
