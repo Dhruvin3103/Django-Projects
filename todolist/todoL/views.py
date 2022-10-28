@@ -10,7 +10,6 @@ def create(request):
     # if request.method == 'POST':
     # d = Createview(request.POST)
     d = Createview(request.POST or None)
-
     if d.is_valid():
             d.save()
             d = Createview()
@@ -27,6 +26,7 @@ def task(request):
 
 def retrive(request):
      c = [i for i in Task.objects.all().values()]
+     print(c)
      # print(c)
      return render(request,'retrive_task.html',{'data':c})
 
@@ -102,6 +102,7 @@ def update_list(request,id1):
 
 def update_task(request, id2,id3):
     u = List.objects.get(id=id2)
+    print(u)
     v = Task.objects.get(id=id3)
     # print(v)
     t = Createview(request.POST or None, instance=u)
