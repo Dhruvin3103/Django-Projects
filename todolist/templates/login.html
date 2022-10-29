@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Login</title>
+</head>
+<body>
+<h1>Login kariye yaha pe </h1>
+{% if data %}
+<h3>{{ data }}</h3>
+{% endif %}
+<form action="" method="post">
+    {% csrf_token %}
+    username : <input type="text" name="username"><br>
+    password : <input type="password" name="password"><br>
+
+    <button type="submit">Login</button>
+</form>
+</body>
+</html>

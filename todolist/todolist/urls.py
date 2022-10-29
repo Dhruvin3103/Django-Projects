@@ -15,11 +15,14 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
+from django.conf import settings
+from django.conf.urls.static import static
 from todoL import views
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('',views.home,name='home'),
+    path('home/',views.home,name='home'),
+    path('',views.home1,name='home1'),
     path('create/',views.create,name='create'),
     path('task/',views.task,name='task'),
     path('retriveT/',views.retrive,name='retrive'),
@@ -29,7 +32,12 @@ urlpatterns = [
     # path('radio1/',views.radio1,name='radio1'),
     path('deleteT/',views.delete_task,name='deleteT'),
     path('deleteL/',views.delete_list,name='deleteL'),
+    path('login/',views.login,name='login'),
+    path('signup/',views.signup,name='signup'),
     path('updateL/<int:id1>',views.update_list,name='updateL'),
     path('updateT/<int:id2>/<int:id3>',views.update_task,name='updateT'),
     # path('update2/<int:id>',views.update2,name='update2'),
 ]
+
+if settings.DEBUG:
+    urlpatterns += static(settings.MEDIA_URL,document_root=settings.MEDIA_ROOT)

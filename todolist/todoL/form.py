@@ -1,4 +1,5 @@
 from django import forms
+from email.mime import image
 from .models import List,Task,user
 from django.contrib.auth.forms import UserCreationForm,UserChangeForm
 class user_createform(UserCreationForm):
@@ -22,3 +23,6 @@ class Taskview(forms.ModelForm):
         fields = {
             'title'
         }
+
+class image(forms.Form):
+    image = forms.ImageField()

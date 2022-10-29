@@ -1,16 +1,53 @@
-from django.shortcuts import render,redirect
-# Create your views here.
-from .models import Task,List
+from django.shortcuts import render,redirect,HttpResponse
+from django.contrib.auth import authenticate,login as logins,logout
+from .models import Task,List,user
+
+from .form import user_createform
 from .form import Createview,Taskview
 def home(request):
     return render(request,'home.html',{})
 
+
+# creating login page
+# start
+def home1(request):
+    return render(request,'home1.html',{})
+def login(request):
+    if request.method == 'POST':
+        username = request.POST['username']
+        password = request.POST['password']
+        user = authenticate(request,username=username,password=password)
+        if user is not None:
+            logins(request,user)
+            if user.is_superuser:
+                return redirect('home')
+            else:
+                print('normal')
+                return redirect('home')
+        else:
+            return render(request,'login.html',{'data':'User is not in our database'})
+    else:
+        return render(request,'login.html')
+
+def signup(request):
+    if request.method == 'POST':
+        fuser = user_createform(request.POST,request.FILES)
+        if fuser.is_valid():
+            fuser.save()
+            fuser = user_createform()
+    else:
+            fuser = user_createform()
+    return render(request,'signup.html',{'data':fuser})
+    # return HttpResponse('<h1>404</h1>')
+
+
+
+# end
 def create(request):
     # d=Createview()
     # if request.method == 'POST':
     # d = Createview(request.POST)
     d = Createview(request.POST or None)
-
     if d.is_valid():
             d.save()
             d = Createview()
@@ -27,6 +64,7 @@ def task(request):
 
 def retrive(request):
      c = [i for i in Task.objects.all().values()]
+     print(c)
      # print(c)
      return render(request,'retrive_task.html',{'data':c})
 
@@ -102,6 +140,7 @@ def update_list(request,id1):
 
 def update_task(request, id2,id3):
     u = List.objects.get(id=id2)
+    print(u)
     v = Task.objects.get(id=id3)
     # print(v)
     t = Createview(request.POST or None, instance=u)
