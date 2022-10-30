@@ -16,6 +16,7 @@ class Task(models.Model):
 
 class List(models.Model):
     title1 = models.CharField(max_length=200)
+    # status = models.BooleanField
     desc = models.TextField()
     start = models.DateTimeField()
     end = models.DateTimeField()
