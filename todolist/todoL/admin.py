@@ -14,8 +14,8 @@ class user_admin(UserAdmin):
     form = user_changeform
     model = user
 
-    list_display = ['username', 'mob_no', 'dob']
-    fieldsets = UserAdmin.fieldsets + ((None, {'fields': ('mob_no', 'dob')}),)
+    list_display = ['username', 'mob_no', 'dob', 'imgs']
+    fieldsets = UserAdmin.fieldsets + ((None, {'fields': ('mob_no', 'dob', 'imgs')}),)
 
 
 
