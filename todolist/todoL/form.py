@@ -20,9 +20,7 @@ class Createview(forms.ModelForm):
 class Taskview(forms.ModelForm):
     class Meta:
         model = Task
-        fields = {
-            'title'
-        }
+        fields = '__all__'
 
 class image(forms.Form):
     image = forms.ImageField()

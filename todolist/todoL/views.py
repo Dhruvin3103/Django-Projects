@@ -72,7 +72,7 @@ def retriveL(request,id):
     r = List.objects.filter(task_FK=(Task.objects.get(id=id))).values()
     # print(r)
     u = [i for i in List.objects.all().values()]
-    print(u)
+    # print(u)
     c = []
     e=0
     for i in r:
@@ -90,6 +90,30 @@ def checkbox(request):
         r2.append(i['id'])
     # print(r1)
     return render(request,'deleteT.html',{'data':zip(r1,r2)})
+
+def checkbox2(request):
+    r1=[]
+    r2=[]
+    for i in List.objects.all().values():
+        r1.append(i['title1'])
+        r2.append(i['id'])
+    # print(r1)
+    return render(request,'complete.html',{'data':zip(r1,r2)})
+
+def complete(request):
+    c = request.POST.getlist('data')
+    for i in c:
+        p = List.objects.get(id=i)
+        p.status = True
+        p.save()
+    r1=[]
+    r2=[]
+    r3=[]
+    for i in List.objects.all().values():
+        r1.append(i['title1'])
+        r3.append(i['status'])
+        r2.append(i['id'])
+    return render(request,'complete.html',{'data':zip(r1,r2,r3)})
 
 def delete_task(request):
     c = request.GET.getlist('data')

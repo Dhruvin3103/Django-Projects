@@ -2,17 +2,18 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Delete Task</title>
+    <title>To do lists</title>
 </head>
 <body>
 <button><a href="http://127.0.0.1:8000/admin">Admin</a></button>
 <button><a href="http://127.0.0.1:8000/home">Home</a></button><br>
-<h1>To Do list</h1>
-<form action="/deleteT" method="GET">
-{% for i,j in data %}
+<form action="/complete/" method="post">
+{% csrf_token %}
+    {% for i,j,k in data %}
+    {% if k == False %}
 <input type="checkbox" name='data' value={{j}}>{{ i }}<br>
+    {% endif %}
 {% endfor %}
-<input type="submit" value="Delete">
-</form>
+<input type="submit" value="Completed">
 </body>
 </html>

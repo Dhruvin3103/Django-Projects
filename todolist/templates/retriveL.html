@@ -10,24 +10,35 @@
 <a href="http://127.0.0.1:8000/admin"><button>Admin</button></a>
 <a href="http://127.0.0.1:8000/create"><button>Create List</button></a>
 <a href="http://127.0.0.1:8000/task"><button>CreateTask</button></a>
-<a href="http://127.0.0.1:8000"><button>Home</button></a><br></p>
+<a href="http://127.0.0.1:8000/home"><button>Home</button></a><br></p>
 
 {% for i,j,k in dat %}
+{% if  j.status == False %}
+<table border = "1">
 
+    <tr><td><b><i>Task {{ i }}</i></b> </td>
+    <td><a href="http://127.0.0.1:8000/updateT/{{ j.id }}/{{ id }}">Update</a></td></tr>
+    <tr><td><b>To do</b> : {{ j.title1 }}</td></tr>
+<!--    <tr><td><b>Status</b> : pending </td></tr>-->
+    <tr><td><b>description</b> : {{ j.desc }}</td></tr>
+    <tr><td><b>start time</b> : {{ j.start }}</td></tr>
+    <tr><td><b>end time</b> : {{ j.end }}</td></tr>
+</table>
+{% endif %}
+
+
+{% if  j.status == True %}
+<p><u> Completed tasks : </u></p>
 <table border = "1">
     <tr><td><b><i>Task {{ i }}</i></b> </td>
     <td><a href="http://127.0.0.1:8000/updateT/{{ j.id }}/{{ id }}">Update</a></td></tr>
-<tr><td><b>To do</b> : {{ j.title1 }}</td></tr>
-    {% if  j.status == False %}
-     <tr><td><b>Status</b> : pending </td></tr>
-    {% else %}
-    <tr><td><b>Status</b> : completed </td></tr>
-    {% endif %}
-<tr><td><b>description</b> : {{ j.desc }}</td></tr>
-<tr><td><b>start time</b> : {{ j.start }}</td></tr>
-<tr><td><b>end time</b> : {{ j.end }}</td></tr>
+    <tr><td><b>To do</b> : {{ j.title1 }}</td></tr>
+<!--    <tr><td><b>Status</b> : completed </td></tr>-->
+    <tr><td><b>description</b> : {{ j.desc }}</td></tr>
+    <tr><td><b>start time</b> : {{ j.start }}</td></tr>
+    <tr><td><b>end time</b> : {{ j.end }}</td></tr>
 </table>
+{% endif %}
 {% endfor %}
-
 </body>
 </html>

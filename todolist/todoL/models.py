@@ -27,3 +27,5 @@ class List(models.Model):
     start = models.DateTimeField(default='')
     end = models.DateTimeField(default='')
     task_FK = models.ForeignKey(Task, on_delete=models.CASCADE)
+
+
