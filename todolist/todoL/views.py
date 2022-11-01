@@ -72,6 +72,7 @@ def retriveL(request,id):
     r = List.objects.filter(task_FK=(Task.objects.get(id=id))).values()
     # print(r)
     u = [i for i in List.objects.all().values()]
+    print(u)
     c = []
     e=0
     for i in r:

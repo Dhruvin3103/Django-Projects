@@ -15,9 +15,15 @@ class Task(models.Model):
         return self.title
 
 class List(models.Model):
+    # completed = 'c'
+    # pending = 'p'
+    status_choices = [
+        (False,'pending'),
+        (True,'completed'),
+    ]
     title1 = models.CharField(max_length=200)
-    # status = models.BooleanField
-    desc = models.TextField()
-    start = models.DateTimeField()
-    end = models.DateTimeField()
+    status = models.BooleanField(default=False,choices=status_choices)
+    desc = models.TextField(default='')
+    start = models.DateTimeField(default='')
+    end = models.DateTimeField(default='')
     task_FK = models.ForeignKey(Task, on_delete=models.CASCADE)
