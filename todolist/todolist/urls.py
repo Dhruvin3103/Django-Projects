@@ -19,6 +19,9 @@ from django.conf import settings
 from django.conf.urls.static import static
 from todoL import views
 
+admin.site.site_title ="UnicodeLP"
+admin.site.site_header ="UnicodeLP"
+
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('home/',views.home,name='home'),

@@ -7,10 +7,9 @@ class user(AbstractUser):
     imgs = models.ImageField(upload_to="image/")
     dob = models.DateField(null=True)
 
-class abc(models.Model):
-    naam = models.CharField(max_length=100)
 class Task(models.Model):
     title = models.CharField(max_length=200)
+    user_fk = models.ForeignKey(user, on_delete=models.CASCADE,default='dc')
     def __str__(self):
         return self.title
 
@@ -28,4 +27,5 @@ class List(models.Model):
     end = models.DateTimeField(default='')
     task_FK = models.ForeignKey(Task, on_delete=models.CASCADE)
 
-
+    def __str__(self):
+        return self.title1

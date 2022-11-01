@@ -33,6 +33,10 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
+    "admin_interface",
+    # "flat_responsive",  # only if django version < 2.0
+    # "flat",  # only if django version < 1.9
+    "colorfield",
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -41,6 +45,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
 
     'todoL',
+
 ]
 
 AUTH_USER_MODEL = 'todoL.user'
