@@ -4,6 +4,7 @@ from django.contrib.auth.models import AbstractUser
 # Create your models here.
 class user(AbstractUser):
     mob_no = models.CharField(max_length=10,unique=True)
+
     imgs = models.ImageField(upload_to="image/")
     dob = models.DateField(null=True)
 

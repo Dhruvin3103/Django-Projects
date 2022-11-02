@@ -7,6 +7,10 @@
 <body style="background-color:powderblue;">
 <div>
 <p><b>HELLO {{user.username}}</b> <img align="right" src="{{user.imgs.url}}" height="50" width="75" ><button><a href="http://127.0.0.1:8000/admin">Admin</a></button><br> </p>
+<!--<a href="http://127.0.0.1:8000/task"><button>logout</button></a>-->
+    <form action="{% url 'home1' %}" method="post">{% csrf_token %}
+        <input type="button" name="logout" value="logout" >
+    </form>
 </div>
 <br>
 <hr>

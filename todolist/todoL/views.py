@@ -1,7 +1,7 @@
 from django.shortcuts import render,redirect,HttpResponse
 from django.contrib.auth import authenticate,login as logins,logout
 from .models import Task,List,user
-
+from django.contrib import messages
 from .form import user_createform
 from .form import Createview,Taskview
 def home(request):
@@ -28,6 +28,11 @@ def login(request):
             return render(request,'login.html',{'data':'User is not in our database'})
     else:
         return render(request,'login.html')
+
+def logout(request):
+    logout(request)
+    messages.success(request,('you were logged out !'))
+    return redirect('')
 
 def signup(request):
     if request.method == 'POST':

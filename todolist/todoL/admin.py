@@ -27,7 +27,7 @@ class user_admin(UserAdmin):
     form = user_changeform
     model = user
     readonly_fields = ('img',)
-    list_display = ['username', 'mob_no', 'dob', 'imgs','img']
+    list_display = ['username','email', 'mob_no', 'dob', 'imgs','img']
     fieldsets = UserAdmin.fieldsets + ((None, {'fields': ('mob_no', 'dob', 'imgs','img')}),)
 
     def img(self,obj):
