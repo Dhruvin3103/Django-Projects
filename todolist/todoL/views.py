@@ -68,40 +68,50 @@ def task(request):
             return redirect('create')
     return render(request,'task.html',{'data':t})
 
-def retrive(request):
-     c = [i for i in Task.objects.all().values()]
-     print(c)
+def retrive(request,id):
+     # print(id)
+     d = Task.objects.filter(user_fk=id).values()
+     # c = [i for i in Task.objects.all().values()]
      # print(c)
-     return render(request,'retrive_task.html',{'data':c})
+     # print(c)
+     return render(request,'retrive_task.html',{'data':d})
 
-def retriveL(request,id):
-    r = List.objects.filter(task_FK=(Task.objects.get(id=id))).values()
+def retriveL(request,id,id1):
+    rt = List.objects.filter(task_FK=(Task.objects.get(id=id))).values()
+    # ru = Task.objects.filter(user_fk=(user.objects.get(id=1))).values()
+    ru = user.objects.get(id=id1)
+    print(rt)
+    print('------------')
+    print(ru)
+    # r = list(set(rt) & set(ru))
+    # r = [i for i in rt if i in ru]
     # print(r)
     u = [i for i in List.objects.all().values()]
     # print(u)
     c = []
     e=0
-    for i in r:
+    for i in rt:
         c.append(e+1)
         e=e+1
-    dc = {'dat':zip(c,r,u),'id':id}
+    dc = {'dat':zip(c,rt,u),'id':id}
     # print(id)
     return render(request,'retriveL.html',dc)
 
-def checkbox(request):
+def checkbox(request,id):
     r1=[]
     r2=[]
-    for i in List.objects.all().values():
+    c = List.objects.filter(user_fk=id).values()
+    for i in c:
         r1.append(i['title1'])
         r2.append(i['id'])
     # print(r1)
     return render(request,'deleteT.html',{'data':zip(r1,r2)})
 
-def checkbox2(request):
+def checkbox2(request,id):
     r1=[]
     r2=[]
     r3=[]
-    for i in List.objects.all().values():
+    for i in List.objects.filter(user_fk=id).values():
         r1.append(i['title1'])
         r2.append(i['id'])
         r3.append(i['status'])
@@ -135,10 +145,11 @@ def delete_task(request):
         r2.append(i['id'])
     return render(request,'deleteT.html',{'data':zip(r1,r2)})
 
-def checkbox1(request):
+def checkbox1(request,id):
     r1=[]
+    c = Task.objects.filter(user_fk=id).values()
     r2=[]
-    for i in Task.objects.all().values():
+    for i in c:
         r1.append(i['title'])
         r2.append(i['id'])
     # print(r1)

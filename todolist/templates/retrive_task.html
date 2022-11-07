@@ -13,7 +13,7 @@
 <a href="http://127.0.0.1:8000/home"><button>home</button></a></p>
 <table border="1">
 {% for i in data %}
-<tr><td><a href="http://127.0.0.1:8000/retriveL/{{ i.id }}">{{ i.title }}</a></td>
+<tr><td><a href="http://127.0.0.1:8000/retriveL/{{ i.id }}/{{ user.id }}">{{ i.title }}</a></td>
     <td><a href="http://127.0.0.1:8000/updateL/{{ i.id }}">Update</a></td></tr>
 {% endfor %}
     </table>

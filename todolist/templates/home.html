@@ -23,12 +23,12 @@
 
 <a href="http://127.0.0.1:8000/create"><button>Create task</button></a>
 <a href="http://127.0.0.1:8000/task"><button>Create list</button></a>
-<a href="http://127.0.0.1:8000/retriveT"><button>retrive data</button></a>
-<a href="http://127.0.0.1:8000/checkbox1"><button>Delete list</button></a>
-<a href="http://127.0.0.1:8000/checkbox"><button>Delete task</button></a>
+<a href="http://127.0.0.1:8000/retriveT/{{ user.id }}"><button>retrive data</button></a>
+<a href="http://127.0.0.1:8000/checkbox1/{{ user.id }}"><button>Delete list</button></a>
+<a href="http://127.0.0.1:8000/checkbox/{{ user.id }}"><button>Delete task</button></a>
 <hr>
 <br>
 
-<a href="http://127.0.0.1:8000/checkbox2"><button><h10>Completed any task ? </h10></button></a>
+<a href="http://127.0.0.1:8000/checkbox2/{{ user.id }}"><button><h10>Completed any task ? </h10></button></a>
 </body>
 </html>
