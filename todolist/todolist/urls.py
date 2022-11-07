@@ -38,6 +38,7 @@ urlpatterns = [
     path('deleteT/',views.delete_task,name='deleteT'),
     path('deleteL/',views.delete_list,name='deleteL'),
     path('login/',views.login,name='login'),
+    path('userlogout/',views.userlogout,name='logout'),
     path('signup/',views.signup,name='signup'),
     path('updateL/<int:id1>',views.update_list,name='updateL'),
     path('updateT/<int:id2>/<int:id3>',views.update_task,name='updateT'),

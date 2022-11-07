@@ -25,10 +25,11 @@ class listadmin(admin.ModelAdmin):
 class user_admin(UserAdmin):
     add_form = user_createform
     form = user_changeform
+    list_per_page = 5
     model = user
-    readonly_fields = ('img',)
-    list_display = ['username','email', 'mob_no', 'dob', 'imgs','img']
-    fieldsets = UserAdmin.fieldsets + ((None, {'fields': ('mob_no', 'dob', 'imgs','img')}),)
+
+    list_display = ['username','email', 'mob_no', 'dob','imgs']
+    fieldsets = UserAdmin.fieldsets + ((None, {'fields': ('mob_no', 'dob', 'imgs')}),)
 
     def img(self,obj):
         return format_html(f'<img src="/media/{obj.imgs}" style="height:10px;width:10px')

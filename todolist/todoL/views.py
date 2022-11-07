@@ -29,10 +29,10 @@ def login(request):
     else:
         return render(request,'login.html')
 
-def logout(request):
+def userlogout(request):
     logout(request)
     messages.success(request,('you were logged out !'))
-    return redirect('')
+    return redirect('login')
 
 def signup(request):
     if request.method == 'POST':
@@ -40,6 +40,7 @@ def signup(request):
         if fuser.is_valid():
             fuser.save()
             fuser = user_createform()
+            return redirect('home')
     else:
             fuser = user_createform()
     return render(request,'signup.html',{'data':fuser})
@@ -99,11 +100,13 @@ def checkbox(request):
 def checkbox2(request):
     r1=[]
     r2=[]
+    r3=[]
     for i in List.objects.all().values():
         r1.append(i['title1'])
         r2.append(i['id'])
+        r3.append(i['status'])
     # print(r1)
-    return render(request,'complete.html',{'data':zip(r1,r2)})
+    return render(request,'complete.html',{'data':zip(r1,r2,r3)})
 
 def complete(request):
     c = request.POST.getlist('data')

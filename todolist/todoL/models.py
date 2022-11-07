@@ -4,8 +4,7 @@ from django.contrib.auth.models import AbstractUser
 # Create your models here.
 class user(AbstractUser):
     mob_no = models.CharField(max_length=10,unique=True)
-
-    imgs = models.ImageField(upload_to="image/")
+    imgs = models.ImageField(upload_to="image/",null=True)
     dob = models.DateField(null=True)
 
 class Task(models.Model):
@@ -27,6 +26,7 @@ class List(models.Model):
     start = models.DateTimeField(default='')
     end = models.DateTimeField(default='')
     task_FK = models.ForeignKey(Task, on_delete=models.CASCADE)
+    user_fk = models.ForeignKey(user, on_delete=models.CASCADE, default=0)
 
     def __str__(self):
         return self.title1

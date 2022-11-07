@@ -11,7 +11,7 @@
 {% csrf_token %}
     {% for i,j,k in data %}
     {% if k == False %}
-<input type="checkbox" name='data' value={{j}}>{{ i }}<br>
+<input type="checkbox" name='data' value={{ j }}>{{ i }}<br>
     {% endif %}
 {% endfor %}
 <input type="submit" value="Completed">
