@@ -2,11 +2,12 @@ from django.shortcuts import render, get_object_or_404
 from django.http import HttpResponse, JsonResponse, Http404
 from django.views.decorators.csrf import csrf_exempt
 # rest_framework import
-from rest_framework import generics
+from rest_framework import authentication,generics,mixins,permissions
 from rest_framework.parsers import JSONParser
 from rest_framework.response import Response
 from rest_framework.decorators import api_view
 
+from .permissions import isstaffpermission
 from .models import article, movie
 from .serializers import articleserializer,movieserializer
 import json
@@ -17,6 +18,11 @@ import json
 class movielistapicreateview(generics.ListCreateAPIView):
     queryset = movie.objects.all()
     serializer_class = movieserializer
+    authentication_classes = [
+        authentication.SessionAuthentication,
+        authentication.TokenAuthentication
+    ]
+    permission_classes = [isstaffpermission]
 
     def perform_create(self, serializer):
         # serializer.save(user=self.request.user)
@@ -28,6 +34,7 @@ moviecreateview = movielistapicreateview.as_view()
 class movieapiview(generics.RetrieveAPIView):
     queryset = movie.objects.all()
     serializer_class = movieserializer
+    # permission_classes = [permissions.IsAuthenticatedOrReadOnly]
     # lookup_field = 'pk'
 movieview = movieapiview.as_view()
 
@@ -45,7 +52,7 @@ class movieapiupdateview(generics.UpdateAPIView):
 movieupdateview = movieapiupdateview.as_view()
 
 # delete view
-class movieapideleteview(generics.DestroyAPIView):
+class movieapideleteview(generics.DestroyAPIView,generics.RetrieveAPIView):
     queryset = movie.objects.all()
     serializer_class = movieserializer
     lookup_field = 'pk'
@@ -54,6 +61,29 @@ class movieapideleteview(generics.DestroyAPIView):
         super().perform_destroy(instance)
 
 moviedeleteview = movieapideleteview.as_view()
+
+# mixins
+
+class moviemixinview(
+    mixins.ListModelMixin,
+    mixins.CreateModelMixin,
+    mixins.RetrieveModelMixin,
+    generics.GenericAPIView
+    ):
+    queryset = movie.objects.all()
+    serializer_class = movieserializer
+    lookup_field = 'pk'
+    def get(self, request, *args, **kwargs):
+        print(args, kwargs)
+        pk = kwargs.get("pk")
+        if pk is not None:
+            return self.retrieve(request, *args, **kwargs)
+        return self.list(request)
+
+    def post(self, request, *args, **kwargs):
+        return self.create(request)
+moviemixinview = moviemixinview.as_view()
+    # def post(self):
 # class movielistapiview(generics.ListAPIView):
 #
 #     queryset = movie.objects.all()

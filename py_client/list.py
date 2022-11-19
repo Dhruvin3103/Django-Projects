@@ -1,11 +1,20 @@
+from getpass import getpass
+
 import requests
 
-endpoint = "http://127.0.0.1:8000/api/movie/"
+auth_endpoint = "http://127.0.0.1:8000/api/movie/auth/"
+username = input('Enter the username : ')
+password = getpass()
+auth_response = requests.post(auth_endpoint, json={'username': username, 'password': password})
+print(auth_response.json())
 
-data = {
-    'title': 'hum kabhi hero the',
-    'content': 'it has 10.0 rating',
-    'price': 180.00
-}
-response = requests.get(endpoint)
-print(response.json())
+
+if auth_response.status_code == 200:
+    token = auth_response.json()['token']
+    headers = {
+        "Authorization": f"Token {token}"
+    }
+    endpoint = "http://127.0.0.1:8000/api/movie/"
+
+    response = requests.get(endpoint,headers=headers)
+    print(response.json())
