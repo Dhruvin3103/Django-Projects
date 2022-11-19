@@ -11,7 +11,7 @@ class movieserializer(serializers.ModelSerializer):
             'title',
             'content',
             'price',
-            # 'sale_price'
+            'sale_price'
         ]
 
 class articleserializer(serializers.ModelSerializer):

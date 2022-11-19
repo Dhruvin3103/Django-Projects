@@ -1,6 +1,6 @@
 import requests
 
-endpoint = "http://127.0.0.1:8000/apihome/"
+endpoint = "http://127.0.0.1:8000/api/movie/apihome/"
 
 # endpoint = "http://httpbin.org/anything"
 
