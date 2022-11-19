@@ -1,9 +1,28 @@
 from django.shortcuts import render
 from django.http import HttpResponse, JsonResponse
 from django.views.decorators.csrf import csrf_exempt
+# rest_framework import
 from rest_framework.parsers import JSONParser
-from .models import article
-from .serializers import articleserializer
+from rest_framework.response import Response
+from rest_framework.decorators import api_view
+
+from .models import article, movie
+from .serializers import articleserializer,movieserializer
+import json
+
+
+@api_view(["POST"])
+def apihome(request, *args, **kwargs):
+    print(request.data)
+    serial = movieserializer(data=request.data)
+    if serial.is_valid(raise_exception=True):
+        serial.save()
+        print(serial.data)
+    # instance = movie.objects.all().order_by("?").first()
+    # data={}
+    # if instance:
+    #     data = movieserializer(instance).data
+        return Response(serial.data)
 
 
 # Create your views here.
@@ -22,8 +41,9 @@ def alist(request):
             return JsonResponse(serial.data, status=201)
         return JsonResponse(serial.errors, status=400)
 
+
 @csrf_exempt
-def adetail(request,pk):
+def adetail(request, pk):
     try:
         art = article.objects.get(pk=pk)
 
@@ -35,7 +55,7 @@ def adetail(request,pk):
         return JsonResponse(serial.data, safe=False)
     elif request.method == "PUT":
         data = JSONParser().parse(request)
-        serial = articleserializer(art,data=data)
+        serial = articleserializer(art, data=data)
         if serial.is_valid():
             serial.save()
             return JsonResponse(serial.data)

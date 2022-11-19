@@ -1,7 +1,8 @@
 from django.urls import path
-from .views import alist,adetail
+from . import views
 urlpatterns = [
-    path('art/', alist, name ='art'),
-    path('artdet/<int:pk>/', adetail, name ='artdet')
+    path('art/', views.alist, name ='art'),
+    path('apihome/', views.apihome, name ='apihome'),
+    path('artdet/<int:pk>/', views.adetail, name ='artdet')
     # path('api-auth/', include('rest_framework.urls'))
 ]
