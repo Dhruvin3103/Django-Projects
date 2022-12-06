@@ -6,6 +6,8 @@ urlpatterns = [
     path('<int:pk>/', views.movieview, name ='movieview'),
     path('<int:pk>/update/', views.movieupdateview, name ='movieview'),
     path('<int:pk>/delete/', views.moviedeleteview, name ='movieview'),
+    path('signup/', views.signupapi, name ='signupapi'),
+    path('verify/', views.verify, name ='verify'),
 
     path('auth/', obtain_auth_token, name ='auth'),
     path('art/', views.alist, name ='art'),

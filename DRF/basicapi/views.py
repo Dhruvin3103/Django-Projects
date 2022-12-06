@@ -1,25 +1,35 @@
+from rest_framework.authtoken.models import Token
+
 from django.shortcuts import render, get_object_or_404
 from django.http import HttpResponse, JsonResponse, Http404
 from django.views.decorators.csrf import csrf_exempt
+from django.contrib.auth import get_user_model
 # rest_framework import
+from rest_framework.views import APIView
 from rest_framework import authentication,generics,mixins,permissions
+from rest_framework.views import APIView
+from rest_framework.response import Response
 from rest_framework.parsers import JSONParser
 from rest_framework.response import Response
 from rest_framework.decorators import api_view
 
 from .permissions import isstaffpermission
-from .models import article, movie
-from .serializers import articleserializer,movieserializer
-import json
+from .models import *
+from .serializers import *
+from .emails import *
+import json, requests
+# token auth
+from rest_framework.authentication import TokenAuthentication
 
+User = get_user_model()
 # genericsview start
 
 # create data
+
 class movielistapicreateview(generics.ListCreateAPIView):
     queryset = movie.objects.all()
     serializer_class = movieserializer
     authentication_classes = [
-        authentication.SessionAuthentication,
         authentication.TokenAuthentication
     ]
     permission_classes = [isstaffpermission]
@@ -29,6 +39,71 @@ class movielistapicreateview(generics.ListCreateAPIView):
         print(serializer.validated_data)
         serializer.save()
 moviecreateview = movielistapicreateview.as_view()
+
+class signup(APIView):
+    def post(self,request):
+        try:
+            data = request.data
+            serializer = signupserialzer(data=data)
+            if serializer.is_valid():
+                serializer.save()
+                send_otp_via_email(serializer.data['email'])
+                return Response({
+                    'status':200,
+                    'message':'User registrated successfully',
+                    'data':serializer.data,
+                })
+            return Response({
+                'status': 400,
+                'message': 'An error Occured',
+                'data': serializer.errors,
+            })
+        except Exception as e:
+            print(e)
+signupapi = signup.as_view()
+
+class verifyotp(APIView):
+    def post(self,request):
+        try:
+            data = request.data
+            serializer = verifyserialzer(data=data)
+            if serializer.is_valid():
+                email = serializer.data['email']
+                otp = serializer.data['otp']
+                user = User.objects.filter(email=email)
+                if not user.exists():
+                    return Response({
+                        'status': 400,
+                        'message': 'something went wrong',
+                        'data': 'invalid email',
+                    })
+
+                if user[0].otp != otp:
+                    return Response({
+                        'status': 400,
+                        'message': 'something went wrong',
+                        'data': 'invalid otp',
+                    })
+                user = user.first()
+                user.is_verified = True
+                user.save()
+                return Response({
+                    'status': 200,
+                    'message': 'User verified successfully',
+                    'data': {},
+                })
+        except Exception as e:
+            print(e)
+verify = verifyotp.as_view()
+# class signup(generics.CreateAPIView):
+#     queryset = User.objects.all()
+#     serializer_class = signupserialzer
+#
+#     def perform_create(self, serializer):
+#         # serializer.save(user=self.request.user)
+#         print(serializer.validated_data)
+#         user = serializer.save()
+# signupapi = signup.as_view()
 
 # retrieve data
 class movieapiview(generics.RetrieveAPIView):
@@ -172,3 +247,10 @@ def adetail(request, pk):
     elif request.method == "DELETE":
         art.delete()
         return HttpResponse(status=204)
+
+
+
+def home(request):
+    return render(request,'Home.html',{})
+
+

@@ -27,6 +27,7 @@ DEBUG = True
 
 ALLOWED_HOSTS = []
 
+AUTH_USER_MODEL = 'basicapi.User'
 
 # Application definition
 
@@ -57,7 +58,7 @@ ROOT_URLCONF = 'DRF.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': ['templates'],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -136,3 +137,21 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 #         "rest_framework.permissions.IsAuthenticatedOrReadOnly"
 #     ]
 # }
+
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_HOST_USER = 'verifyapidhruvin@gmail.com'
+EMAIL_HOST_PASSWORD = 'qutzjtruvkehmrmk'
+EMAIL_USE_TLS = True
+EMAIL_PORT = 587
+
+
+
+
+
+
+
+
+
+
+

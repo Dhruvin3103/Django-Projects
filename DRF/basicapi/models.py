@@ -1,6 +1,14 @@
 from django.db import models
-
+from django.contrib.auth.models import AbstractUser
 # Create your models here.
+from .manager import UserManager
+
+class User(AbstractUser):
+    email = models.EmailField(unique=True)
+    is_verified = models.BooleanField(default=False)
+    otp = models.CharField(max_length=6, null=True, blank=True)
+
+    objects = UserManager()
 class movie(models.Model):
     title = models.CharField(max_length=100)
     content = models.TextField(blank=True, null=True)
