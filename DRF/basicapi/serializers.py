@@ -9,13 +9,20 @@ class signupserialzer(serializers.ModelSerializer):
     password = serializers.CharField(required=True, write_only=True)
     password2 = serializers.CharField(required=True, write_only=True)
     is_verfied = serializers.BooleanField(default=False)
+    mob = serializers.IntegerField(required=True,write_only=True)
+    age = serializers.IntegerField(required=True,write_only=True)
+
     class Meta:
         model = User
         fields = [
             'username',
             'email',
+            'first_name',
+            'last_name',
             'password',
             'password2',
+            'mob',
+            'age',
             'is_verfied',
         ]
         extra_kwargs = {
@@ -25,12 +32,17 @@ class signupserialzer(serializers.ModelSerializer):
     def create(self, validated_data):
         username = validated_data.get('username')
         email = validated_data.get('email')
+        first_name = validated_data.get('first_name')
+        last_name = validated_data.get('last_name')
         password = validated_data.get('password')
         password2 = validated_data.get('password2')
+        mob = validated_data.get('mob')
+        age = validated_data.get('age')
+
 
 
         if password == password2:
-            user = User(username=username, email=email)
+            user = User(username=username, email=email, first_name=first_name, last_name=last_name, mob=mob,age=age)
             user.set_password(password)
             user.save()
             return user
