@@ -19,6 +19,7 @@ from basicapi import views
 urlpatterns = [
     path('',views.home,name='home1'),
     path('admin/', admin.site.urls),
-    path('api/movie/', include('basicapi.urls'))
+    path('api/movie/', include('basicapi.urls')),
+    path('api/theatre/',include('theatre.urls'))
     # path('api-auth/', include('rest_framework.urls'))
 ]

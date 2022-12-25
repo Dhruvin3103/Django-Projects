@@ -32,7 +32,7 @@ class movielistapicreateview(generics.ListCreateAPIView):
     authentication_classes = [
         authentication.TokenAuthentication
     ]
-    permission_classes = [isstaffpermission]
+    # permission_classes = [isstaffpermission]
 
     def perform_create(self, serializer):
         # serializer.save(user=self.request.user)

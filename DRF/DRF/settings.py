@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     'basicapi',
     'movie',
     'theatre',
+    'booking',
     'rest_framework',
     'rest_framework.authtoken',
 ]
