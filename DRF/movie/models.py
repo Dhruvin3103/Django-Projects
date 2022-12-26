@@ -14,7 +14,9 @@ class movie(models.Model):
     movie_hrs = models.IntegerField(default=2)# total watchtime of movie
     movie_ticket_price = models.IntegerField(default=100)
     no_of_seats = models.IntegerField(default=50)
+    hall_no = models.IntegerField(default=1)
     theatre_no = models.ForeignKey(theatre, on_delete=models.CASCADE)
+
 
     def __str__(self):
         return self.movie_name
