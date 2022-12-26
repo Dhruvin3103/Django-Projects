@@ -1,3 +1,4 @@
+from django.http import Http404
 from django.shortcuts import render
 
 from rest_framework import mixins, generics, authentication
@@ -25,10 +26,6 @@ class bookingmixin(
         if pk is not None:
             return self.retrieve(request, *args, **kwargs)
         return self.list(request)
-
-    def post(self, request, *args, **kwargs):
-        return self.create(request, *args, **kwargs)
-
     def put(self, request, *args, **kwargs):
         return self.update(request, *args, **kwargs)
 
@@ -38,6 +35,43 @@ class bookingmixin(
 
 booking_m = bookingmixin.as_view()
 
+class update_booking(APIView):
+
+    def get_object(self, pk):
+        try:
+            return booking.objects.get(pk=pk)
+        except booking.DoesNotExist:
+            raise Http404
+
+    def put(self, request, pk, format=None):
+        snippet = self.get_object(pk)
+        serializer = bookingserialzer(snippet, data=request.data)
+        data = request.data
+        t = data['b_no_of_tickets']
+        id = data['movie_no']
+        m = movie.objects.filter(id=id).values()
+        d = booking.objects.filter(movie_no=id)
+        d1 = booking.objects.filter(id=pk).values()
+        p = m[0]['movie_ticket_price'] * t
+        data['booking_price'] = p
+        c = 0
+        for i in d.values(): c = c + i['b_no_of_tickets']
+        print(m[0]['no_of_seats'])
+        print(c)
+        print(d1[0]['b_no_of_tickets'])
+
+        if ((m[0]['no_of_seats'] - (c-d1[0]['b_no_of_tickets'])) >= data['b_no_of_tickets']):
+            if serializer.is_valid():
+                serializer.save()
+                return Response(serializer.data)
+            return Response(serializer.errors)
+        else:
+            return Response({
+                'status':400,
+                'message':'an error occured'
+            })
+
+update_b = update_booking.as_view()
 
 class create_booking(APIView):
 
@@ -59,11 +93,8 @@ class create_booking(APIView):
             d = booking.objects.filter(movie_no=id)
             p=m[0]['movie_ticket_price']*t
             data['booking_price']=p
-            print(m[0]['no_of_seats'])
             c = 0
             for i in d.values(): c = c+i['b_no_of_tickets']
-            print(c)
-            # print(x)
             if((m[0]['no_of_seats']-c)>=data['b_no_of_tickets']):
                 serializer = bookingserialzer(data=data)
                 if serializer.is_valid():
