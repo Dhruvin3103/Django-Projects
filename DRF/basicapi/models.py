@@ -1,14 +1,16 @@
 from django.db import models
 from django.core.validators import MinLengthValidator,MaxLengthValidator
-from django.contrib.auth.models import AbstractUser
+from django.contrib.auth.models import AbstractUser, PermissionsMixin
 # Create your models here.
 from .manager import UserManager
 
-class User(AbstractUser):
+class User(AbstractUser,PermissionsMixin):
     email = models.EmailField(unique=True)
     is_verified = models.BooleanField(default=False)
+    is_theatre_operator = models.BooleanField(default=False)
+    is_movie_operator = models.BooleanField(default=False)
     otp = models.CharField(max_length=6, null=True, blank=True)
-    mob = models.IntegerField(validators=[MinLengthValidator(10),MaxLengthValidator(10)],default=0000000000)
+    mob = models.IntegerField(max_length=10,default=9000000000)
     age = models.IntegerField(default=17)
 
 

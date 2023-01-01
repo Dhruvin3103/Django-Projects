@@ -1,10 +1,11 @@
 from django.http import Http404
 from django.shortcuts import render
 
-from rest_framework import mixins, generics, authentication
+from rest_framework import mixins, generics, authentication, permissions
+from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.views import APIView
-
+from .permissions import userpermission
 from .models import *
 from .serializers import *
 
@@ -20,7 +21,7 @@ class bookingmixin(
     queryset = booking.objects.all()
     serializer_class = bookingserialzer
     authentication_classes = [authentication.TokenAuthentication]
-
+    permission_classes = [userpermission]
     def get(self, request, *args, **kwargs):
         pk = kwargs.get("pk")
         if pk is not None:
@@ -36,6 +37,8 @@ class bookingmixin(
 booking_m = bookingmixin.as_view()
 
 class update_booking(APIView):
+    authentication_classes = [authentication.TokenAuthentication]
+    permission_classes = [userpermission]
 
     def get_object(self, pk):
         try:
@@ -74,17 +77,23 @@ class update_booking(APIView):
 update_b = update_booking.as_view()
 
 class create_booking(APIView):
+    queryset = booking.objects.all()
+    authentication_classes = [authentication.TokenAuthentication]
+    permission_classes = [userpermission]
 
     def get(self,request):
+
+        print(request.user)
+
         data = booking.objects.all()
         d = [i for i in booking.objects.all().values()]
-        print(data.count())
         serializer = bookingserialzer(data,many=True)
         return Response({
             'status':200,
             'data': serializer.data
         })
     def post(self,request):
+        print(request.user)
         try:
             data = request.data
             t=data['b_no_of_tickets']

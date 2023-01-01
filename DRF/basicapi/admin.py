@@ -4,4 +4,9 @@ from .models import *
 
 admin.site.register(article)
 admin.site.register(movie)
-admin.site.register(User)
+
+
+class useradmin(admin.ModelAdmin):
+    filter_horizontal = ("groups", "user_permissions")
+
+admin.site.register(User,useradmin)

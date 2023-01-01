@@ -8,9 +8,11 @@ User = get_user_model()
 class signupserialzer(serializers.ModelSerializer):
     password = serializers.CharField(required=True, write_only=True)
     password2 = serializers.CharField(required=True, write_only=True)
-    is_verfied = serializers.BooleanField(default=False)
     mob = serializers.IntegerField(required=True,write_only=True)
     age = serializers.IntegerField(required=True,write_only=True)
+    is_verfied = serializers.BooleanField(default=False)
+    is_theatre_operator = serializers.BooleanField(default=False)
+    is_movie_operator = serializers.BooleanField(default=False)
 
     class Meta:
         model = User
@@ -24,6 +26,8 @@ class signupserialzer(serializers.ModelSerializer):
             'mob',
             'age',
             'is_verfied',
+            'is_theatre_operator',
+            'is_movie_operator'
         ]
         extra_kwargs = {
             'password': {'write_only': True},
