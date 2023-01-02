@@ -1,5 +1,6 @@
 from datetime import date
 
+from django.contrib.auth.mixins import PermissionRequiredMixin
 from django.shortcuts import render
 from django.utils.datetime_safe import datetime
 from rest_framework import mixins, generics, authentication
@@ -8,6 +9,7 @@ from rest_framework.views import APIView
 
 from .models import *
 from .serializers import *
+from DRF.permissions import moviepermission
 
 
 # Create your views here.
@@ -16,11 +18,13 @@ class moviemixin(
     mixins.RetrieveModelMixin,
     mixins.UpdateModelMixin,
     mixins.DestroyModelMixin,
-    generics.GenericAPIView
+    generics.GenericAPIView,
+    PermissionRequiredMixin
 ):
     queryset = movie.objects.all()
     serializer_class = movieserialzer
     authentication_classes = [authentication.TokenAuthentication]
+    permission_classes = [moviepermission]
 
     def get(self,request,*args,**kwargs):
         pk = kwargs.get("pk")
@@ -49,6 +53,8 @@ movie_M = moviemixin.as_view()
 
 
 class create_movie_view(APIView):
+    authentication_classes = [authentication.TokenAuthentication]
+    permission_classes = [moviepermission]
     def get(self,request):
         data = movie.objects.all()
         d = [i for i in movie.objects.all().values()]

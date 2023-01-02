@@ -4,6 +4,8 @@ from django.shortcuts import render
 from rest_framework import generics, authentication, mixins
 from .models import *
 from .serializers import *
+from DRF.permissions import theatrepermission
+
 
 class theatremixin(
     mixins.CreateModelMixin,
@@ -15,7 +17,7 @@ class theatremixin(
     queryset = theatre.objects.all()
     serializer_class = theatreserialzer
     authentication_classes = [authentication.TokenAuthentication]
-
+    permission_classes = [theatrepermission]
     def get(self,request, *args, **kwargs):
         pk = kwargs.get("pk")
         if pk is not None:
@@ -37,6 +39,7 @@ class theatre_retrieve_create_view(generics.ListCreateAPIView):
     authentication_classes = [
         authentication.TokenAuthentication
     ]
+    permission_classes = [theatrepermission]
 
     def perform_create(self, serializer):
         serializer.save()
