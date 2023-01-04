@@ -109,11 +109,19 @@ class change_password(APIView):
     authentication_classes = [TokenAuthentication]
     permission_classes = [IsAuthenticated]
 
-    def post(self,request,format=None):
-        user = request.user
+    def post(self,request,uid,token,format=None):
+        user1 = request.user
         serializer = change_passwordserializer(data=request.data)
         if serializer.is_valid():
             if request.data['password']==request.data['password2']:
+                id = smart_str(urlsafe_base64_decode(uid))
+                user = User.objects.get(id=id)
+                if PasswordResetTokenGenerator().check_token(user, token):
+                    user1.set_password(request.data['password'])
+                    user1.save()
+                else:
+                    raise serializers.ValidationError('Token is not Valid or Expired')
+
                 return Response({
                     'status' : 200,
                     'message': 'password changed',
@@ -131,6 +139,23 @@ class change_password(APIView):
             })
 
 change_pass = change_password.as_view()
+
+class send_email_change_pass(APIView):
+
+
+    def post(self,request):
+        serializer = SendPasswordResetEmailSerializer(data=request.data)
+        if serializer.is_valid():
+            return Response({
+                'status' : 200,
+                'msg': 'Password Reset link send. Please check your Email'
+            })
+        else:
+            return Response({
+                'message': serializer.errors
+            })
+
+sendmail = send_email_change_pass.as_view()
 
 
 

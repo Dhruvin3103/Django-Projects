@@ -9,7 +9,8 @@ urlpatterns = [
     path('signup/', views.signupapi, name ='signupapi'),
     path('verify/', views.verify, name ='verify'),
     path('login/', views.login1, name ='login'),
-    path('changepass/', views.change_pass, name ='change_pass'),
+    path('changepass/<uid>/<token>/', views.change_pass, name ='change_pass'),
+    path('sendmail/', views.sendmail, name ='send_mail'),
 
     path('auth/', obtain_auth_token, name ='auth'),
     # path('art/', views.alist, name ='art'),

@@ -11,3 +11,9 @@ def send_otp_via_email(email):
     user_obj = User.objects.get(email=email)
     user_obj.otp = otp
     user_obj.save()
+
+def send_passreset_email(email,link):
+    subject = 'Password reset Link'
+    email_from = settings.EMAIL_HOST
+    message = f'password reset link : {link}'
+    send_mail(subject, message, email_from, [email])
