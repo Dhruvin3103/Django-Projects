@@ -116,8 +116,11 @@ class change_password(APIView):
             if request.data['password']==request.data['password2']:
                 id = smart_str(urlsafe_base64_decode(uid))
                 user = User.objects.get(id=id)
+
                 if PasswordResetTokenGenerator().check_token(user, token):
-                    user1.set_password(request.data['password'])
+                    p=request.data['password']
+                    print(p)
+                    user1.set_password(p)
                     user1.save()
                 else:
                     raise serializers.ValidationError('Token is not Valid or Expired')
@@ -126,7 +129,7 @@ class change_password(APIView):
                     'status' : 200,
                     'message': 'password changed',
                     'user': request.user.username,
-                    'password': request.data['password']
+                    'password': request.user.password
                 })
             else:
                 return Response({
