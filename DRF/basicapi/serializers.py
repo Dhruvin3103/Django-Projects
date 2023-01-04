@@ -98,7 +98,7 @@ class SendPasswordResetEmailSerializer(serializers.Serializer):
       print('Encoded UID', uid)
       token = PasswordResetTokenGenerator().make_token(user)
       print('Password Reset Token', token)
-      link = 'http://localhost:8000/api/movie/changepass/'+uid+'/'+token
+      link = 'http://localhost:8000/api/movie/changepass/'+uid+'/'+token+'/'
       print('Password Reset Link', link)
       # Send EMail
       send_passreset_email(email,link)
