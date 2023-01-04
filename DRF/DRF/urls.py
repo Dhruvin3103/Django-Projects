@@ -17,7 +17,6 @@ from django.contrib import admin
 from django.urls import path, include
 from basicapi import views
 urlpatterns = [
-    path('',views.home,name='home1'),
     path('admin/', admin.site.urls),
     path('api/movie/', include('basicapi.urls')),
     path('api/theatre/',include('theatre.urls')),

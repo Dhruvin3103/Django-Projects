@@ -1,9 +1,14 @@
 from django.contrib.auth.models import Group
 from rest_framework import serializers
-from .models import article,movie
 from django.contrib.auth import get_user_model
 User = get_user_model()
 
+class loginserializer(serializers.ModelSerializer):
+
+    username = serializers.CharField(max_length=255)
+    class Meta:
+        model = User
+        fields =['username','password']
 
 class signupserialzer(serializers.ModelSerializer):
     password = serializers.CharField(required=True, write_only=True)
@@ -29,6 +34,7 @@ class signupserialzer(serializers.ModelSerializer):
             'is_theatre_operator',
             'is_movie_operator'
         ]
+
         extra_kwargs = {
             'password': {'write_only': True},
             'password2': {'write_only': True},
@@ -56,20 +62,24 @@ class signupserialzer(serializers.ModelSerializer):
 class verifyserialzer(serializers.Serializer):
     email = serializers.EmailField(required=True)
     otp = serializers.CharField(required=True)
+
+class change_passwordserializer(serializers.Serializer):
+    password = serializers.CharField(max_length=250, style={'input_type':'password'},write_only=True,required=True)
+    password2 = serializers.CharField(max_length=250, style={'input_type':'password'},write_only=True,required=True)
+
+    class Meta:
+        fields = ['password', 'password2']
+
+        def create(self, r):
+            password = r.get('password')
+            password2 = r.get('password2')
+
+            if password != password2:
+                raise serializers.ValidationError("Passwords are not matching")
+
+            return r
+
+
 # class user_create(U)
 
-class movieserializer(serializers.ModelSerializer):
-    class Meta:
-        model = movie
-        fields = [
-            'id',
-            'title',
-            'content',
-            'price',
-            'sale_price'
-        ]
 
-class articleserializer(serializers.ModelSerializer):
-    class Meta:
-        model = article
-        fields = "__all__"

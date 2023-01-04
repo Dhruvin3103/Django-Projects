@@ -53,51 +53,67 @@ movie_M = moviemixin.as_view()
 
 
 class create_movie_view(APIView):
-    authentication_classes = [authentication.TokenAuthentication]
-    permission_classes = [moviepermission]
-    def get(self,request):
-        data = movie.objects.all()
-        d = [i for i in movie.objects.all().values()]
+    try :
+        authentication_classes = [authentication.TokenAuthentication]
+        permission_classes = [moviepermission]
+        def get(self,request):
+            try:
+                data = movie.objects.all()
+                d = [i for i in movie.objects.all().values()]
 
-        # if((d[0]['movie_time'].date())<date(2022,12,26)):print(1)
-        serializer = movieserialzer(data,many=True)
-        return Response({
-            'status':200,
-            'data':serializer.data
-        })
+                # if((d[0]['movie_time'].date())<date(2022,12,26)):print(1)
+                serializer = movieserialzer(data,many=True)
+                return Response({
+                    'status':200,
+                    'data':serializer.data
+                })
+            except Exception as e:
+                return Response({
+                    'status': 200,
+                    'message': 'error'
+                })
+        def post(self,request):
+            try:
+                data = request.data
+                d = data['movie_time']
+                id=data['theatre_no']
+                t = theatre.objects.filter(id=id).values()
+                m = movie.objects.filter(theatre_no=id)
+                m1 = movie.objects.filter(movie_time=data['movie_time'])
+                c=0
+                print(m1.count())
 
-    def post(self,request):
-        try:
-            data = request.data
-            d = data['movie_time']
-            id=data['theatre_no']
-            t = theatre.objects.filter(id=id).values()
-            m = movie.objects.filter(theatre_no=id)
-            m1 = movie.objects.filter(movie_time=data['movie_time'])
-            c=0
-            print(m1.count())
-
-            data['hall_no']=m.count()+1
-            if(t[0]['no_of_halls'] >m1.count()):
-                serializer = movieserialzer(data=data)
-                if serializer.is_valid():
-                    serializer.save()
-                    return Response({
-                        'status':200,
-                        'message':'movie is regristered to this theatre',
-                        'data':serializer.data,
-                    })
+                data['hall_no']=m.count()+1
+                if(t[0]['no_of_halls'] >m1.count()):
+                    serializer = movieserialzer(data=data)
+                    if serializer.is_valid():
+                        serializer.save()
+                        return Response({
+                            'status':200,
+                            'message':'movie is regristered to this theatre',
+                            'data':serializer.data,
+                        })
+                    else:
+                        return Response({
+                            'status':400,
+                            'message':'error occured',
+                            'data':serializer.errors,
+                        })
                 else:
                     return Response({
                         'status':400,
-                        'message':'error occured',
-                        'data':serializer.errors,
+                        'message':'all slots are booked try for other day'
                     })
-            else:
+            except Exception as e:
                 return Response({
-                    'status':400,
-                    'message':'all slots are booked try for other day'
+                    'status' : 200,
+                    'message' : 'error'
                 })
-        except Exception as e:
-            print(e)
+    except Exception as e:
+        raise Response({
+            'status': 200,
+            'message': 'error'
+        })
+
+
 movie_RC = create_movie_view.as_view()
