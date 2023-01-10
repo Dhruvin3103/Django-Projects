@@ -8,14 +8,14 @@
 </head>
 <body>
 
-    <form method="POST" action="% url 'payment' %">{% csrf_token %}
+    <form method="POST" action="% url 'payment' %">
 
-          <h1>{{ razor_key }}</h1>
+          <h1>{{ name }}</h1>
           <script src="https://checkout.razorpay.com/v1/checkout.js" onload="loaded=true;"
                   data-key="{{ razor_key }}"
-                  data-amount="{{ booking.amount }}"
+                  data-amount="{{ amount }}"
                   data-currency="INR"
-                  data-order_id="{{id}}"
+                  data-order_id="{{name}}"
                   data-buttontext="Pay with Razorpay"
                   data-name="Professional Cipher"
                   data-description="Django and Data Science"
@@ -25,6 +25,7 @@
                   data-theme.color="#F37254">
 
           </script>
+        <input type="submit" value="Pay with Razorpay" class="razorpay-payment-button">
     <input type="hidden" custom="Hidden Element" name="hidden">
     </form>
 </body>
