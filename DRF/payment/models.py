@@ -1,19 +1,16 @@
 from datetime import datetime
-
+from booking.models import booking
 from django.db import models
 
 # Create your models here.
 
 class payment(models.Model):
-    p_choices=(
-        (1,'Gpay'),
-        (2,'paytm'),
-        (3,'upi')
-    )
-    payment_method = models.CharField(max_length=20,choices=p_choices)
+
     p_upi_id = models.CharField(max_length=30)
+    p_booking_id = models.ForeignKey(booking,on_delete=models.CASCADE,default=21)
     p_time = models.DateTimeField(default=datetime.now())
-    p_price = models.IntegerField()
+    p_price = models.IntegerField(default=100)
+    p_done = models.BooleanField(default=False)
 
     def __str__(self):
         return self.p_upi_id

@@ -137,6 +137,10 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 #     ]
 # }
 
+RAZORPAY_KEY_ID = "rzp_test_jFVihMxWEzzNEB"
+RAZORPAY_KEY_SECRET = "QM8xGxTYMbT3QFhcAcfHAA50"
+
+
 
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = 'smtp.gmail.com'

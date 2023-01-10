@@ -1,0 +1,13 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+  <form action="{% url 'payment'%}" method="post">{% csrf_token %}
+      <p>booking id : </p><input type="text" name="name">
+      <button type="submit">pay</button>
+  </form>
+</body>
+</html>

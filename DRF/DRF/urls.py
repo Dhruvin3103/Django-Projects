@@ -21,6 +21,7 @@ urlpatterns = [
     path('api/movie/', include('basicapi.urls')),
     path('api/theatre/',include('theatre.urls')),
     path('api/movie/',include('movie.urls')),
-    path('api/booking/',include('booking.urls'))
+    path('api/booking/',include('booking.urls')),
+    path('api/payment/',include('payment.urls'))
     # path('api-auth/', include('rest_framework.urls'))
 ]
