@@ -7,13 +7,12 @@ from django.contrib.auth import get_user_model, authenticate
 from rest_framework.permissions import IsAuthenticated
 # rest_framework import
 from rest_framework.views import APIView
-from rest_framework import authentication,generics,mixins,permissions
+from rest_framework import authentication, generics, mixins, permissions
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework.parsers import JSONParser
 from rest_framework.response import Response
 from rest_framework.decorators import api_view
-
 
 from .models import *
 from .serializers import *
@@ -23,13 +22,15 @@ import json, requests
 from rest_framework.authentication import TokenAuthentication
 
 User = get_user_model()
+
+
 # genericsview start
 
 # create data
 
 class loginview(APIView):
 
-    def post(self,request):
+    def post(self, request):
         serializer = loginserializer(data=request.data)
         if serializer.is_valid():
             # email = serializer.data.get('email')
@@ -45,12 +46,37 @@ class loginview(APIView):
             else:
                 return Response({
                     'status': 404,
-                    'errors': {'non_field_errors':['Username or passwprd is not valid']}
+                    'errors': {'non_field_errors': ['Username or passwprd is not valid']}
                 })
 
+
 login1 = loginview.as_view()
+
+
+#
+# def registeroauth(request,backend):
+#     token = request.data.get('access_token')
+#     user = request.backend.do_auth(token)
+#     print(request)
+#     if User:
+#         token,_=Token.objects.get_or_create(user=User)
+#         return Response(
+#             {
+#                 'token': token.key
+#                 'status':200
+#             }
+#         )
+#     else:
+#         return Response(
+#             {
+#                 'errors':'Invalid Token'
+#                 'status':400
+#             }
+#         )
+#
+
 class signup(APIView):
-    def post(self,request):
+    def post(self, request):
         try:
             data = request.data
             serializer = signupserialzer(data=data)
@@ -58,9 +84,9 @@ class signup(APIView):
                 serializer.save()
                 send_otp_via_email(serializer.data['email'])
                 return Response({
-                    'status':200,
-                    'message':'User registrated successfully',
-                    'data':serializer.data,
+                    'status': 200,
+                    'message': 'User registrated successfully',
+                    'data': serializer.data,
                 })
             return Response({
                 'status': 400,
@@ -69,56 +95,66 @@ class signup(APIView):
             })
         except Exception as e:
             print(e)
+
+
 signupapi = signup.as_view()
 
-class verifyotp(APIView):
-    def post(self,request):
-        try:
-            data = request.data
-            serializer = verifyserialzer(data=data)
-            if serializer.is_valid():
-                email = serializer.data['email']
-                otp = serializer.data['otp']
-                user = User.objects.filter(email=email)
-                if not user.exists():
-                    return Response({
-                        'status': 400,
-                        'message': 'something went wrong',
-                        'data': 'invalid email',
-                    })
 
-                if user[0].otp != otp:
-                    return Response({
-                        'status': 400,
-                        'message': 'something went wrong',
-                        'data': 'invalid otp',
-                    })
-                user = user.first()
-                user.is_verified = True
-                user.save()
+class verifyotp(APIView):
+    def post(self, request):
+        data = request.data
+        print(data)
+        serializer = verifyserialzer(data=data)
+
+        if serializer.is_valid():
+            email = serializer.data['email']
+            otp = serializer.data['otp']
+            user = User.objects.filter(email=email)
+            if not user.exists():
                 return Response({
-                    'status': 200,
-                    'message': 'User verified successfully',
-                    'data': {},
+                    'status': 400,
+                    'message': 'something went wrong',
+                    'data': 'invalid email',
                 })
-        except Exception as e:
-            print(e)
+
+            if user[0].otp != otp:
+                return Response({
+                    'status': 400,
+                    'message': 'something went wrong',
+                    'data': 'invalid otp',
+                })
+            user = user.first()
+            user.is_verified = True
+            user.save()
+            return Response({
+                'status': 200,
+                'message': 'User verified successfully',
+                'data': 'thankyou',
+            })
+        else:
+            return Response({
+                'status' : 400,
+                'message': 'error in serializer',
+                'data': serializer.errors
+            })
+
 verify = verifyotp.as_view()
+
 
 class change_password(APIView):
     authentication_classes = [TokenAuthentication]
     permission_classes = [IsAuthenticated]
 
-    def post(self,request,uid,token,format=None):
+    def post(self, request, uid, token, format=None):
         user1 = request.user
         serializer = change_passwordserializer(data=request.data)
         if serializer.is_valid():
-            if request.data['password']==request.data['password2']:
+            if request.data['password'] == request.data['password2']:
                 id = smart_str(urlsafe_base64_decode(uid))
                 user = User.objects.get(id=id)
 
                 if PasswordResetTokenGenerator().check_token(user, token):
-                    p=request.data['password']
+                    p = request.data['password']
                     print(p)
                     user1.set_password(p)
                     user1.save()
@@ -126,7 +162,7 @@ class change_password(APIView):
                     raise serializers.ValidationError('Token is not Valid or Expired')
 
                 return Response({
-                    'status' : 200,
+                    'status': 200,
                     'message': 'password changed',
                     'user': request.user.username,
                     'password': request.user.password
@@ -138,19 +174,20 @@ class change_password(APIView):
                 })
         else:
             return Response({
-                'message' : 'sry'
+                'message': 'sry'
             })
+
 
 change_pass = change_password.as_view()
 
+
 class send_email_change_pass(APIView):
 
-
-    def post(self,request):
+    def post(self, request):
         serializer = SendPasswordResetEmailSerializer(data=request.data)
         if serializer.is_valid():
             return Response({
-                'status' : 200,
+                'status': 200,
                 'msg': 'Password Reset link send. Please check your Email'
             })
         else:
@@ -158,36 +195,8 @@ class send_email_change_pass(APIView):
                 'message': serializer.errors
             })
 
+
 sendmail = send_email_change_pass.as_view()
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 # class signup(generics.CreateAPIView):
 #     queryset = User.objects.all()
@@ -321,4 +330,3 @@ sendmail = send_email_change_pass.as_view()
 # def home(request):
 #     return render(request,'Home.html',{})
 #
-

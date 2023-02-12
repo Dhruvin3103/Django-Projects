@@ -65,9 +65,13 @@ class signupserialzer(serializers.ModelSerializer):
         else:
             raise serializers.ValidationError({'error':'Both passwords do not match'})
 
-class verifyserialzer(serializers.Serializer):
+class verifyserialzer(serializers.ModelSerializer):
     email = serializers.EmailField(required=True)
     otp = serializers.CharField(required=True)
+
+    class Meta:
+        model = User
+        fields =['email','otp']
 
 class change_passwordserializer(serializers.Serializer):
     password = serializers.CharField(max_length=250, style={'input_type':'password'},write_only=True,required=True)

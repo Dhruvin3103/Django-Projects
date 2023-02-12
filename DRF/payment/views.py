@@ -53,8 +53,8 @@ from .models import *
 #
 # Create your views here.
 class payment(APIView):
-    # authentication_classes = [authentication.TokenAuthentication]
-    # permission_classes = [IsAuthenticated]
+    authentication_classes = [authentication.TokenAuthentication]
+    permission_classes = [IsAuthenticated]
     def post(self,request):
 
             data = request.data
