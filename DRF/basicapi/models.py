@@ -10,7 +10,7 @@ class User(AbstractUser,PermissionsMixin):
     is_theatre_operator = models.BooleanField(default=False)
     is_movie_operator = models.BooleanField(default=False)
     otp = models.CharField(max_length=6, null=True, blank=True)
-    mob = models.IntegerField(max_length=10,default=9000000000)
+    mob = models.IntegerField(default=9000000000)
     age = models.IntegerField(default=17)
 
 
