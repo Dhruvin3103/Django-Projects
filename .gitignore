@@ -3,3 +3,4 @@ DRF/DRF/.env
 __pycache__/
 venv/
 movie_api2.png
+ignore.txt
