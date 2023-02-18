@@ -1,4 +1,4 @@
-*/db.sqlite3
+DRF/db.sqlite3
+DRF/DRF/.env
 __pycache__/
 venv/
-.env
