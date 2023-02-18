@@ -11,7 +11,7 @@ https://docs.djangoproject.com/en/4.1/ref/settings/
 """
 
 from pathlib import Path
-
+import environ
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -21,6 +21,8 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = 'django-insecure-w19q$g%se=6=+x#(3b59&@4h5tzt9stp)yc8_c5%h=p-fdgtgo'
 
+env = environ.Env()
+environ.Env.read_env()
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
@@ -164,14 +166,14 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 #     ]
 # }
 
-RAZORPAY_KEY_ID = "rzp_test_jFVihMxWEzzNEB"
-RAZORPAY_KEY_SECRET = "QM8xGxTYMbT3QFhcAcfHAA50"
+RAZORPAY_KEY_ID = env('KEY_ID')
+RAZORPAY_KEY_SECRET = env('KEY_SECRET')
 
 
 
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = 'smtp.gmail.com'
-EMAIL_HOST_USER = 'verifyapidhruvin@gmail.com'
-EMAIL_HOST_PASSWORD = 'qutzjtruvkehmrmk'
+EMAIL_HOST_USER = env('USER')
+EMAIL_HOST_PASSWORD = env('PASSWORD')
 EMAIL_USE_TLS = True
 EMAIL_PORT = 587
